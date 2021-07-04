@@ -26,8 +26,10 @@ const atlasRows = {
 };
 
 // центрируем персонажа по канвасу
-pX = 300;
-pY = 300;
+// pX = 300;
+// pY = 300;
+pX = ((600 / 2 - spriteW / 2) / 10).toFixed(0) * 10;
+pY = ((600 / 2 - spriteH / 2) / 10).toFixed(0) * 10;
 
 const keyDownHandler = (e) => {
   if (e.key === 'Down' || e.key === 'ArrowDown') bottomPressed = true;
