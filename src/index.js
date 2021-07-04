@@ -16,6 +16,8 @@ let leftPressed = false;
 let pY = 0;
 let pX = 0;
 let rowY = 0;
+
+// зададим порядковые номера строк атласа для направлений
 const atlasRows = {
   down: 0,
   left: 1,
@@ -51,26 +53,26 @@ img.addEventListener('load', () => {
   setInterval(() => {
     if (bottomPressed) {
       if (pY <= 600 - 48 - 10) pY += 10;
-      rowY = spriteH * atlasRows.down;
+      rowY = atlasRows.down;
       cycle = (cycle + 1) % shots;
     }
     if (topPressed) {
       if (pY >= 10) pY -= 10;
-      rowY = spriteH * atlasRows.up;
+      rowY = atlasRows.up;
       cycle = (cycle + 1) % shots;
     }
     if (rightPressed) {
       if (pX < 600 - 48) pX += 10;
-      rowY = spriteH * atlasRows.right;
+      rowY = atlasRows.right;
       cycle = (cycle + 1) % shots;
     }
     if (leftPressed) {
       if (pX >= 10) pX -= 10;
-      rowY = spriteH * atlasRows.left;
+      rowY = atlasRows.left;
       cycle = (cycle + 1) % shots;
     }
     ctx.clearRect(0, 0, 600, 600);
-    ctx.drawImage(img, cycle * spriteW, rowY, spriteW, spriteH, pX, pY, spriteW, spriteH);
+    ctx.drawImage(img, cycle * spriteW, rowY * spriteH, spriteW, spriteH, pX, pY, spriteW, spriteH);
   }, 120);
 
   // уберём Loading... из центра страницы чтобы не маячил после загрузки
