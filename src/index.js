@@ -5,6 +5,8 @@ import Female1Walk from './assets/Female-1-Walk.png';
 const canvas = document.getElementById('game');
 const ctx = canvas.getContext('2d');
 
+const canvasW = canvas.width;
+const canvasH = canvas.height;
 const spriteW = 48;
 const spriteH = 48;
 const shots = 3;
@@ -16,6 +18,7 @@ let leftPressed = false;
 let pY = 0;
 let pX = 0;
 let atlasRow = 0;
+const step = 17;
 
 // зададим порядковые номера строк атласа для направлений
 const atlasRows = {
@@ -26,10 +29,8 @@ const atlasRows = {
 };
 
 // центрируем персонажа по канвасу
-// pX = 300;
-// pY = 300;
-pX = ((600 / 2 - spriteW / 2) / 10).toFixed(0) * 10;
-pY = ((600 / 2 - spriteH / 2) / 10).toFixed(0) * 10;
+pX = ((canvasW / 2 - spriteW / 2) / step).toFixed(0) * step;
+pY = ((canvasH / 2 - spriteH / 2) / step).toFixed(0) * step;
 
 const keyDownHandler = (e) => {
   if (e.key === 'Down' || e.key === 'ArrowDown') bottomPressed = true;
@@ -54,22 +55,22 @@ img.src = Female1Walk;
 img.addEventListener('load', () => {
   setInterval(() => {
     if (bottomPressed) {
-      if (pY <= 600 - 48 - 10) pY += 10;
+      pY = pY + step > canvasH - spriteH ? canvasH - spriteH : pY + step;
       atlasRow = atlasRows.down;
       cycle = (cycle + 1) % shots;
     }
     if (topPressed) {
-      if (pY >= 10) pY -= 10;
+      pY = pY - step < 1 ? 1 : pY - step;
       atlasRow = atlasRows.up;
       cycle = (cycle + 1) % shots;
     }
     if (rightPressed) {
-      if (pX < 600 - 48) pX += 10;
+      pX = pX + step > canvasW - spriteW ? canvasW - spriteW : pX + step;
       atlasRow = atlasRows.right;
       cycle = (cycle + 1) % shots;
     }
     if (leftPressed) {
-      if (pX >= 10) pX -= 10;
+      pX = pX - step < 1 ? 1 : pX - step;
       atlasRow = atlasRows.left;
       cycle = (cycle + 1) % shots;
     }
