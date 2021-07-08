@@ -1,6 +1,6 @@
 import './index.scss';
 import Female1Walk from './assets/Female-1-Walk.png';
-// import Male5Walk from './assets/Male-5-Walk.png';
+// import Female1Walk from './assets/Male-5-Walk.png';
 
 const canvas = document.getElementById('game');
 const ctx = canvas.getContext('2d');
@@ -9,8 +9,8 @@ const canvasW = canvas.width;
 const canvasH = canvas.height;
 const spriteW = 48;
 const spriteH = 48;
-const shots = 3;
-let cycle = 0;
+// const shots = 3;
+let cycle = 1;
 let bottomPressed = false;
 let topPressed = false;
 let rightPressed = false;
@@ -28,9 +28,31 @@ const atlasRows = {
   up: 3,
 };
 
+// объект определяющий логику кадров спрайта
+
+const frameCounter = {
+  stayFrame: 1, // позиция спрайта стоЯщего персонажа в атласе
+  walkingSequence: [0, 2], // последовательность спрайтов идущего персонажа
+  currentWalkingIndex: 0, // индекс текущего кадра шагающего спрайта
+  currentFrame: 1, // начальный кадр спрайта - стоим
+
+  next() {
+    // метод возвращает номер следующего кадра "идущего" спрайта
+    // eslint-disable-next-line no-plusplus
+    if (++this.currentWalkingIndex === this.walkingSequence.length) this.currentWalkingIndex = 0;
+    this.currentFrame = this.walkingSequence[this.currentWalkingIndex];
+    return this.currentFrame;
+  },
+
+  stay() {
+    // метод возвращает индекс "стоЯщего" спрайта
+    return this.stayFrame;
+  },
+};
+
 // центрируем персонажа по канвасу
-pX = ((canvasW / 2 - spriteW / 2) / step).toFixed(0) * step;
-pY = ((canvasH / 2 - spriteH / 2) / step).toFixed(0) * step;
+pX = (canvasW - spriteW) / 2;
+pY = (canvasH - spriteH) / 2;
 
 const keyDownHandler = (e) => {
   if (e.key === 'Down' || e.key === 'ArrowDown') bottomPressed = true;
@@ -44,6 +66,7 @@ const keyUpHandler = (e) => {
   if (e.key === 'Up' || e.key === 'ArrowUp') topPressed = false;
   if (e.key === 'Right' || e.key === 'ArrowRight') rightPressed = false;
   if (e.key === 'Left' || e.key === 'ArrowLeft') leftPressed = false;
+  cycle = frameCounter.stay(); // кадр стоим
 };
 
 document.addEventListener('keydown', keyDownHandler);
@@ -55,26 +78,59 @@ img.src = Female1Walk;
 img.addEventListener('load', () => {
   setInterval(() => {
     if (bottomPressed) {
-      pY = pY + step > canvasH - spriteH ? canvasH - spriteH : pY + step;
       atlasRow = atlasRows.down;
-      cycle = (cycle + 1) % shots;
+      if (pY === canvasH - spriteH) {
+        cycle = frameCounter.stay();
+      } else {
+        cycle = frameCounter.next();
+        if (pY + step < canvasH - spriteH) {
+          pY += step;
+        } else {
+          pY = canvasH - spriteH;
+        }
+      }
     }
     if (topPressed) {
-      pY = pY - step < 1 ? 1 : pY - step;
       atlasRow = atlasRows.up;
-      cycle = (cycle + 1) % shots;
+      if (pY === 1) {
+        cycle = frameCounter.stay();
+      } else {
+        cycle = frameCounter.next();
+        if (pY - step > 1) {
+          pY -= step;
+        } else {
+          pY = 1;
+        }
+      }
     }
     if (rightPressed) {
-      pX = pX + step > canvasW - spriteW ? canvasW - spriteW : pX + step;
       atlasRow = atlasRows.right;
-      cycle = (cycle + 1) % shots;
+      if (pX === canvasW - spriteW) {
+        cycle = frameCounter.stay();
+      } else {
+        cycle = frameCounter.next();
+        if (pX + step < canvasW - spriteW) {
+          pX += step;
+        } else {
+          pX = canvasW - spriteW;
+        }
+      }
     }
     if (leftPressed) {
-      pX = pX - step < 1 ? 1 : pX - step;
       atlasRow = atlasRows.left;
-      cycle = (cycle + 1) % shots;
+      if (pX === 1) {
+        cycle = frameCounter.stay();
+      } else {
+        cycle = frameCounter.next();
+        if (pX - step > 1) {
+          pX -= step;
+        } else {
+          pX = 1;
+        }
+      }
     }
-    ctx.clearRect(0, 0, 600, 600);
+    ctx.clearRect(0, 0, canvasW, canvasH);
+    // console.log(cycle, frameCounter.currentWalkingIndex, frameCounter.walkingSequence.length);
 
     // eslint-disable-next-line max-len
     ctx.drawImage(img, cycle * spriteW, atlasRow * spriteH, spriteW, spriteH, pX, pY, spriteW, spriteH);
