@@ -14,10 +14,10 @@ class ClientWorld {
   init() {
     const { map } = this.levelCfg;
 
-    // цикл по строкам
-    map.forEach((row, sX) => {
-      // цикл по ячейкам в строке
-      row.forEach((cell, sY) => {
+    // цикл по столбцам
+    map.forEach((column, sY) => {
+      // цикл по ячейкам в столбце
+      column.forEach((cell, sX) => {
         // цикл по слоям спрайтов в ячейке снизу вверх
         cell.forEach((layerSprite) => {
           this.engine.renderSpriteFrame({
