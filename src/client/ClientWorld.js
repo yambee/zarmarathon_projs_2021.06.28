@@ -10,16 +10,24 @@ class ClientWorld {
   }
 
   init() {
-    // хуярим цикл по world.json
-    // console.log(this.levelCfg);
+    const { map } = this.levelCfg;
 
-    this.engine.renderSpriteFrame({
-      sprite: ['terrain', 'grass'],
-      frame: 0,
-      x: 48,
-      y: 48,
-      w: 48,
-      h: 48,
+    // цикл по строкам
+    map.forEach((row, sX) => {
+      // цикл по ячейкам в строке
+      row.forEach((cell, sY) => {
+        // цикл по слоям спрайтов в ячейке снизу вверх
+        cell.forEach((layerSprite) => {
+          this.engine.renderSpriteFrame({
+            sprite: ['terrain', layerSprite],
+            frame: 0,
+            x: sX * 48,
+            y: sY * 48,
+            w: 48,
+            h: 48,
+          });
+        });
+      });
     });
   }
 }
