@@ -6,6 +6,8 @@ class ClientWorld {
       levelCfg,
       height: levelCfg.map.length,
       width: levelCfg.map[0].length,
+      cellWidth: 30,
+      cellHeight: 30,
     });
   }
 
@@ -21,10 +23,10 @@ class ClientWorld {
           this.engine.renderSpriteFrame({
             sprite: ['terrain', layerSprite],
             frame: 0,
-            x: sX * 48,
-            y: sY * 48,
-            w: 48,
-            h: 48,
+            x: sX * this.cellWidth,
+            y: sY * this.cellHeight,
+            w: this.cellWidth,
+            h: this.cellHeight,
           });
         });
       });
