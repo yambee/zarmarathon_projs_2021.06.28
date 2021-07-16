@@ -25,7 +25,7 @@ class ClientGame {
   static init(cfg) {
     if (!ClientGame.game) {
       ClientGame.game = new ClientGame(cfg);
-      console.log('Game INITT');
+      // console.log('Game INITT');
     }
   }
 
@@ -33,7 +33,10 @@ class ClientGame {
     this.engine.loadSprites(sprites).then(() => {
       this.engine.on('render', () => {
         this.map.init();
+        // console.log('####: render', time);
       });
+      // console.log('####: this.engine', this.engine);
+      // console.log('####: this.map', this.map);
       this.engine.start();
     });
   }
