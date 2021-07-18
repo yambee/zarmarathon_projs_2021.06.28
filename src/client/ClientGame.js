@@ -3,11 +3,13 @@ import ClientWorld from './ClientWorld';
 
 import sprites from '../configs/sprites';
 import levelCfg from '../configs/world.json';
+import gameObjects from '../configs/gameObjects.json';
 
 class ClientGame {
   constructor(cfg) {
     Object.assign(this, {
       cfg,
+      gameObjects,
     });
     this.engine = this.createEngine();
     this.map = this.createWorld();
@@ -25,18 +27,15 @@ class ClientGame {
   static init(cfg) {
     if (!ClientGame.game) {
       ClientGame.game = new ClientGame(cfg);
-      // console.log('Game INITT');
     }
   }
 
   initEngine() {
     this.engine.loadSprites(sprites).then(() => {
-      this.engine.on('render', () => {
-        this.map.init();
-        // console.log('####: render', time);
+      this.map.init();
+      this.engine.on('render', (_, time) => {
+        this.map.render(time);
       });
-      // console.log('####: this.engine', this.engine);
-      // console.log('####: this.map', this.map);
       this.engine.start();
     });
   }
