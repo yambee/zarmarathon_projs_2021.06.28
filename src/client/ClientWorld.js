@@ -33,7 +33,7 @@ class ClientWorld extends PositionedObject {
         map[row][col] = new ClientCell({
           world: this,
           cellCol: col,
-          celRow: row,
+          cellRow: row,
           cellCfg: levelCfg.map[row][col],
         });
       }
