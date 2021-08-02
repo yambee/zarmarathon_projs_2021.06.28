@@ -5,6 +5,7 @@ import sprites from '../configs/sprites';
 import levelCfg from '../configs/world.json';
 import gameObjects from '../configs/gameObjects.json';
 
+// СРОЧНО ДОДЕЛЫВАЮ ДОЛГИ
 class ClientGame {
   constructor(cfg) {
     Object.assign(this, {
